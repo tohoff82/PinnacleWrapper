@@ -6,31 +6,46 @@ namespace PinnacleWrapper.Data
 {
     public class Period
     {
-        [JsonProperty(PropertyName = "lineId")]
-        public long LineId { get; set; }
+        //[JsonProperty("lineId")]
+        //public long LineId { get; set; }
 
-        [JsonProperty(PropertyName = "number")]
+        [JsonProperty("number")]
         public int Number { get; set; }
 
-        [JsonProperty(PropertyName = "description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [JsonProperty(PropertyName = "cutoffDateTime")]
-        public DateTime CutoffDateTime { get; set; }
+        [JsonProperty("shortDescription")]
+        public string ShortDescription { get; set; }
 
-        [JsonProperty(PropertyName = "spreads")]
-        public List<Spread> Spreads { get; set; }
+        [JsonProperty("spreadDescription")]
+        public string SpreadDescription { get; set; }
 
-        [JsonProperty(PropertyName = "moneyLine")]
-        public MoneyLine MoneyLine { get; set; }
+        [JsonProperty("moneylineDescription")]
+        public string MoneylineDescription { get; set; }
 
-        [JsonProperty(PropertyName = "totals")]
-        public List<TotalPoints> Totals { get; set; }
+        [JsonProperty("totalSDescription")]
+        public string TotalDescription { get; set; }
 
-        //[JsonProperty(PropertyName = "teamTotals")]
-        //public TeamTotalPoints TeamTotalPoints { get; set; }      // temporarily unused
+        [JsonProperty("team1TotalDescription")]
+        public string Team1TotalDescription { get; set; }
 
-        [JsonProperty(PropertyName = "maxBetAmount")]
-        public BetAmount MaxBetAmount { get; set; }
+        [JsonProperty("team2TotalDescription")]
+        public string Team2TotalDescription { get; set; }
+
+        [JsonProperty("spreadShortDescription")]
+        public string SpreadShortDescription { get; set; }
+
+        [JsonProperty("moneylineShortDescription")]
+        public string MoneylineShortDescription { get; set; }
+
+        [JsonProperty("totalShortDescription")]
+        public string TotalShortDescription { get; set; }
+
+        [JsonProperty("team1TotalShortDescription")]
+        public string Team1TotalShortDescription { get; set; }
+
+        [JsonProperty("team2TotalShortDescription")]
+        public string team2TotalShortDescription { get; set; }
     }
 }
