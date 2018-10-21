@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PinnacleWrapper", "PinnacleWrapper\PinnacleWrapper.csproj", "{E28C9E8A-F23E-4585-AF7C-8345EDBECCFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{532E50EB-2A64-4080-B628-E3ACF7B4C27D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E28C9E8A-F23E-4585-AF7C-8345EDBECCFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E28C9E8A-F23E-4585-AF7C-8345EDBECCFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E28C9E8A-F23E-4585-AF7C-8345EDBECCFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E28C9E8A-F23E-4585-AF7C-8345EDBECCFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{532E50EB-2A64-4080-B628-E3ACF7B4C27D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{532E50EB-2A64-4080-B628-E3ACF7B4C27D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{532E50EB-2A64-4080-B628-E3ACF7B4C27D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{532E50EB-2A64-4080-B628-E3ACF7B4C27D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D6362A87-AD79-4E15-BDF3-02401F7D5558}
+	EndGlobalSection
+EndGlobal
