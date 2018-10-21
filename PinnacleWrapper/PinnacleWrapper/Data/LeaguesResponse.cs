@@ -5,7 +5,7 @@ namespace PinnacleWrapper.Data
 {
     public class LeaguesResponse
     {
-        [JsonProperty(PropertyName = "leagues")]
-        public List<League> Leagues;
+        [JsonProperty("leagues")]
+        public List<League> Leagues { get; set; }
     }
 }
