@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace PinnacleWrapper.Data
+namespace PinnacleWrapper.Data.Response
 {
     public class PeriodResponse
     {
