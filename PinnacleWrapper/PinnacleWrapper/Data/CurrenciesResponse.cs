@@ -5,7 +5,7 @@ namespace PinnacleWrapper.Data
 {
     public class CurrenciesResponse
     {
-        [JsonProperty(PropertyName = "currencies")]
-        public List<Currency> Currencies;
+        [JsonProperty("currencies")]
+        public List<Currency> Currencies { get; set; }
     }
 }
