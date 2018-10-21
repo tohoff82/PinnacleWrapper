@@ -5,21 +5,21 @@ namespace PinnacleWrapper.Data
     public class Sport
     {
         [JsonProperty("id")]
-        public int Id;
+        public int Id { get; set; } 
 
         [JsonProperty("name")]
-        public string Name;
+        public string Name { get; set; }
 
         [JsonProperty("hasOfferings")]
-        public bool HasOfferings;
+        public bool HasOfferings { get; set; }
 
         [JsonProperty("leagueSpecialsCount")]
-        public int leagueSpecialsCount;
+        public int LeagueSpecialsCount { get; set; }
 
         [JsonProperty("eventSpecialsCount")]
-        public int eventSpecialsCount;
+        public int EventSpecialsCount { get; set; }
 
         [JsonProperty("eventCount")]
-        public int eventCount;
+        public int EventCount { get; set; }
     }
 }
