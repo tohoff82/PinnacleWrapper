@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace PinnacleWrapper.Data
+namespace PinnacleWrapper.Data.Response
 {
     public class LeaguesResponse
     {
