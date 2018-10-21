@@ -6,9 +6,6 @@ namespace PinnacleWrapper.Data
 {
     public class Period
     {
-        //[JsonProperty("lineId")]
-        //public long LineId { get; set; }
-
         [JsonProperty("number")]
         public int Number { get; set; }
 
@@ -24,7 +21,7 @@ namespace PinnacleWrapper.Data
         [JsonProperty("moneylineDescription")]
         public string MoneylineDescription { get; set; }
 
-        [JsonProperty("totalSDescription")]
+        [JsonProperty("totalDescription")]
         public string TotalDescription { get; set; }
 
         [JsonProperty("team1TotalDescription")]
@@ -46,6 +43,6 @@ namespace PinnacleWrapper.Data
         public string Team1TotalShortDescription { get; set; }
 
         [JsonProperty("team2TotalShortDescription")]
-        public string team2TotalShortDescription { get; set; }
+        public string Team2TotalShortDescription { get; set; }
     }
 }
