@@ -13,6 +13,6 @@ namespace PinnacleWrapper.Data
         public int Id { get; set; }
 
         [JsonProperty("leagues")]
-        public List<LigueInPlay> LiguesList { get; set; }
+        public List<LeagueInPlay> LeaguesList { get; set; }
     }
 }
