@@ -17,7 +17,7 @@ namespace PinnacleWrapper.Data.Request
 
         public static string Inrunning { get; private set; } = "v1/inrunning";
 
-        public static string TeaserGroups { get; private set; } = "v1/teaser/groups";
+        public static string TeaserGroups { get; private set; } = "v1/teaser/groups?oddsformat={0}";
 
         public static string CancellationReasons { get; private set; } = "v1/cancellationreasons";
 
