@@ -10,6 +10,6 @@ namespace PinnacleWrapper.Data.Response
     public class InRunningResponse
     {
         [JsonProperty("sports")]
-        public List<SportInPlay> SportsList { get; set; }
+        public List<SportInRunning> InRunningSports { get; set; }
     }
 }
