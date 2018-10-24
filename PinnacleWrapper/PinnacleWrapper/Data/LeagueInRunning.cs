@@ -1,29 +1,30 @@
 ﻿using Newtonsoft.Json;
+using PinnacleWrapper.Enums;
 using System.Collections.Generic;
 
 namespace PinnacleWrapper.Data
 {
-    public class LeagueInPlay
+    public class LeagueInRunning
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int LeagueId { get; set; }
 
         [JsonProperty("events")]
-        public List<EventInPlay> EventsList { get; set; }
+        public List<EventInRuning> InRuningEvents { get; set; }
     }
 
-    public class EventInPlay
+    public class EventInRuning
     {
         [JsonProperty("id")]
-        public long Id { get; set; }
+        public long EventId { get; set; }
 
         [JsonProperty("state")]
-        public int State { get; set; }
+        public InRunningState State { get; set; }
 
         [JsonProperty("elapsed")]
-        public int Elapsed { get; set; }
+        public int ElapsedTime { get; set; }
 
-        //State
+        //State - Enum
         //1 = First half in progress
         //2 = Half time in progress
         //3 = Second half in progress
