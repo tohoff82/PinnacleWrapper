@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace PinnacleWrapper.Data
 {
-    public class SportInPlay
+    public class SportInRunning
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public int SportId { get; set; }
 
         [JsonProperty("leagues")]
-        public List<LeagueInPlay> LeaguesList { get; set; }
+        public List<LeagueInRunning> InRuningLeagues { get; set; }
     }
 }
