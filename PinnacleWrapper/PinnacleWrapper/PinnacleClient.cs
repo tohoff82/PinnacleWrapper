@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Net.Http;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System;
 using Newtonsoft.Json;
-using PinnacleWrapper.Data;
 using PinnacleWrapper.Enums;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using PinnacleWrapper.Data;
+using PinnacleWrapper.Data.Response;
+using PinnacleWrapper.Data.Request;
 
 namespace PinnacleWrapper
 {
     public class PinnacleClient
     {
         private HttpClient httpClient;
-
-        private readonly string clientId;
-        private readonly string password;
 
         public string CurrencyCode { get; private set; }
         public OddsFormat OddsFormat { get; private set; }
@@ -30,8 +29,6 @@ namespace PinnacleWrapper
 
         public PinnacleClient(string clientId, string password, string currencyCode, OddsFormat oddsFormat)
         {
-            this.clientId = clientId;
-            this.password = password;
             lastFeedRequest = DateTime.Now;
             CurrencyCode = currencyCode;
             OddsFormat = oddsFormat;
@@ -39,25 +36,57 @@ namespace PinnacleWrapper
             httpClient = new HttpClient { BaseAddress = new Uri(BaseAddress) };
 
             // put auth header into httpclient
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
-                    Convert.ToBase64String(
-                        Encoding.ASCII.GetBytes(string.Format("{0}:{1}", this.clientId, this.password))));
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue
+            (
+                "Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("{0}:{1}", clientId, password)))
+            );
         }
 
-        public async Task<List<Sport>> GetSports()
+
+        protected async Task<T> JsonGetAsync<T>(string requestUrl, params object[] values)
         {
-            return (await GetJsonAsync<SportsResponse>("v2/sports")).Sports;
+            var response = await httpClient.GetAsync(string.Format(requestUrl, values)).ConfigureAwait(false);
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();         // throw if web request failed
+
+            // deserialise json async
+            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-        public async Task<List<League>> GetLeagues(int sportId)
+        // ToDo: replace requestData object type with "IJsonSerialisable"
+        protected async Task<T> JsonPostAsync<T>(string requestUrl, object requestData)
         {
-            return (await GetJsonAsync<LeaguesResponse>("v2/leagues?sportid={0}", sportId)).Leagues;
+            var requestPostData = JsonConvert.SerializeObject(requestData);
+
+            var response = await httpClient.PostAsync(requestUrl,
+                new StringContent(requestPostData, Encoding.UTF8, "application/json")).ConfigureAwait(false);
+
+            var json = await response.Content.ReadAsStringAsync();
+
+            response.EnsureSuccessStatusCode();         // throw if web request failed
+
+            // deserialise async
+            return await Task.Run(() => JsonConvert.DeserializeObject<T>(json));
         }
 
-        public async Task<List<Currency>> GetCurrencies()
-        {
-            return (await GetJsonAsync<CurrenciesResponse>("v2/currencies")).Currencies;
-        }
+
+        /*---------- OTHERS -------------*/
+        public Task<SportsResponse> GetSports() => JsonGetAsync<SportsResponse>(RequestStringSegment.Sports);
+
+        public Task<LeaguesResponse> GetLeagues(int sportId) => JsonGetAsync<LeaguesResponse>(RequestStringSegment.Leagues, sportId);
+
+        public Task<PeriodResponse> GetPeriods(int sportId) => JsonGetAsync<PeriodResponse>(RequestStringSegment.Periods, sportId);
+
+        public Task<InRunningResponse> GetInRunning() => JsonGetAsync<InRunningResponse>(RequestStringSegment.Inrunning);
+
+        public Task<TeaserGroupsResponse> GetTeaserGroups(OddsFormat format) => JsonGetAsync<TeaserGroupsResponse>(RequestStringSegment.TeaserGroups, format);
+
+        public Task<CancellationReasonsResponse> GetCancellationReasons() => JsonGetAsync<CancellationReasonsResponse>(RequestStringSegment.CancellationReasons);
+
+        public Task<CurrenciesResponse> GetCurrencies() => JsonGetAsync<CurrenciesResponse>(RequestStringSegment.Currencies);
+
 
         #region GetFeed
 
@@ -101,38 +130,10 @@ namespace PinnacleWrapper
 
         #endregion
 
-        protected async Task<T> GetJsonAsync<T>(string requestUrl, params object[] values)
-        {
-            var response = await httpClient.GetAsync(string.Format(requestUrl, values)).ConfigureAwait(false);
-
-            response.EnsureSuccessStatusCode();         // throw if web request failed
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            // deserialise json async
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(json));
-        }
-
-        // ToDo: replace requestData object type with "IJsonSerialisable"
-        protected async Task<T> PostJsonAsync<T>(string requestUrl, object requestData)
-        {
-            var requestPostData = JsonConvert.SerializeObject(requestData);
-
-            var response = await httpClient.PostAsync(requestUrl,
-                new StringContent(requestPostData, Encoding.UTF8, "application/json")).ConfigureAwait(false);
-
-            response.EnsureSuccessStatusCode();         // throw if web request failed
-
-            var json = await response.Content.ReadAsStringAsync();
-
-            // deserialise async
-            return await Task.Factory.StartNew(() => JsonConvert.DeserializeObject<T>(json));
-        }
-
         public Task<ClientBalance> GetClientBalance()
         {
             const string uri = "v1/client/balance";
-            return GetJsonAsync<ClientBalance>(uri);
+            return JsonGetAsync<ClientBalance>(uri);
         }
 
         public Task<GetBetsResponse> GetBets(BetListType type, DateTime startDate, DateTime endDate)
@@ -145,7 +146,7 @@ namespace PinnacleWrapper
 
             var uri = sb.ToString();
 
-            return GetJsonAsync<GetBetsResponse>(uri);
+            return JsonGetAsync<GetBetsResponse>(uri);
         }
 
         public Task<GetBetsResponse> GetBets(List<int> betIds)
@@ -157,12 +158,12 @@ namespace PinnacleWrapper
 
             var uri = sb.ToString();
 
-            return GetJsonAsync<GetBetsResponse>(uri);
+            return JsonGetAsync<GetBetsResponse>(uri);
         }
 
         public Task<PlaceBetResponse> PlaceBet(PlaceBetRequest placeBetRequest)
         {
-            return PostJsonAsync<PlaceBetResponse>("v1/bets/place", placeBetRequest);
+            return JsonPostAsync<PlaceBetResponse>("v1/bets/place", placeBetRequest);
         }
 
         /// <summary>
@@ -219,13 +220,7 @@ namespace PinnacleWrapper
 
             var uri = sb.ToString();
 
-            return GetJsonAsync<GetLineResponse>(uri);
-        }
-
-        public Task<GetInRunningResponse> GetInRunning()
-        {
-            const string uri = "v1/inrunning";
-            return GetJsonAsync<GetInRunningResponse>(uri);
+            return JsonGetAsync<GetLineResponse>(uri);
         }
 
         public Task<GetFixturesResponse> GetFixtures(GetFixturesRequest request)
@@ -244,7 +239,7 @@ namespace PinnacleWrapper
                 sb.AppendFormat("&IsLive={0}", 1);
 
 
-            return GetJsonAsync<GetFixturesResponse>(sb.ToString());
+            return JsonGetAsync<GetFixturesResponse>(sb.ToString());
         }
 
         public Task<GetOddsResponse> GetOdds(GetOddsRequest request)
@@ -265,7 +260,7 @@ namespace PinnacleWrapper
             sb.AppendFormat("&oddsFormat={0}", OddsFormat);
             sb.AppendFormat("&currencycode={0}", CurrencyCode);
 
-            return GetJsonAsync<GetOddsResponse>(sb.ToString());
+            return JsonGetAsync<GetOddsResponse>(sb.ToString());
         }
     }
 }
