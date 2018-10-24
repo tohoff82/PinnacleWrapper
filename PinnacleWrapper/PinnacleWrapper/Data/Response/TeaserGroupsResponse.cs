@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PinnacleWrapper.Data.Response
 {
-    public class TeaserGroupsRespose
+    public class TeaserGroupsResponse
     {
         [JsonProperty("teaserGroups")]
         public List<TeaserGroup> TeaserGroups { get; set; }
