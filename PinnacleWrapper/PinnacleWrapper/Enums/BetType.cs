@@ -6,9 +6,9 @@ namespace PinnacleWrapper.Enums
     [JsonConverter(typeof(StringEnumConverter))]
     public enum BetType
     {
-        Spread,
-        MoneyLine,
-        TotalPoints,
-        TeamTotalPoints
+        SPREAD,
+        MONEYLINE,
+        TOTAL_POINTS,
+        TEAM_TOTAL_POINTS
     }
 }
