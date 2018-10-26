@@ -10,7 +10,7 @@ namespace PinnacleWrapper.Data.Request
     public class StraightLineRequest
     {
         public int LeagueId { get; private set; }
-        public double Handicap { get; private set; }
+        public decimal? Handicap { get; private set; }
         public string OddsFormat { get; private set; }
         public int SportId { get; private set; }
         public long EventId { get; private set; }
@@ -20,19 +20,17 @@ namespace PinnacleWrapper.Data.Request
         public string Team { get; private set; }
         public string Side { get; private set; }
 
-        public StraightLineRequest(int leagueId, double handicap, OddsFormat format, int sportId, long eventId, int period, BetType betType, TeamType team, SideType side)
+        public StraightLineRequest(int sportId, int leagueId, long eventId, int period, OddsFormat format, BetType betType, decimal? handicap = null, TeamType? team = null, SideType? side = null)
         {
-            LeagueId = leagueId;
-            OddsFormat = format.ToString();
             SportId = sportId;
+            LeagueId = leagueId;
             EventId = eventId;
             PeriodNumber = period;
+            OddsFormat = format.ToString();
             BetType = betType.ToString();
-
-            Handicap = betType == Enums.BetType.MONEYLINE ? double.NaN : handicap;
-
-            Team = betType == Enums.BetType.TOTAL_POINTS ? null : team.ToString();
-            Side = (betType == Enums.BetType.MONEYLINE || betType  == Enums.BetType.SPREAD) ? null : side.ToString();
+            Handicap = handicap;
+            Team = team == null ? null : team.ToString();
+            Side = side == null ? null : side.ToString();
         }
 
     }
